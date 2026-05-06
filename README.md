@@ -1,73 +1,65 @@
-# React + TypeScript + Vite
+# Extension Field Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A friendly, hands-on guide to building browser extensions in JS or TS.
+Covers everything from "what is an extension" to a working tutorial,
+plus a side-by-side comparison of Chrome, Firefox, and Safari.
 
-Currently, two official plugins are available:
+## What's inside
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Foundations** — concepts, anatomy, manifest.json, manifest V2 vs V3,
+  permissions, background workers, content scripts, popup/options/side
+  panel, storage, messaging, the API tour, cross-browser, security,
+  best practices, limits.
+- **Build** — a real tutorial. We build *Word Counter*, an extension
+  that counts words on the page, lets you save snippets, fires daily
+  reminders, and ships to Chrome Web Store and Firefox AMO.
+- **Compare** — Chrome / Edge vs Firefox vs Safari, Manifest V2 vs V3,
+  capabilities, store policies, pros and cons, when to pick which.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 + TypeScript + Vite. Hash-based routing, dark/light themes,
+distinct accent per section (cyan for Foundations, amber for Build).
+Tiny bespoke syntax highlighter for code samples (json, js, ts, html,
+bash). No external content libraries.
 
-## Expanding the ESLint configuration
+## Run it
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+pnpm install
+pnpm dev      # local dev at http://localhost:5173
+pnpm build    # production build into dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## How content is organised
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Each section has its own file in `src/content/`. Pages are TSX objects
+with `id`, `title`, `heading`, `lede`, and `content`. Add a new page
+by appending — the sidebar picks it up automatically.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```ts
+{
+  id: 'something',
+  title: 'Sidebar label',
+  heading: 'Page heading',
+  lede: <>One line summary.</>,
+  content: <>JSX content...</>,
+}
 ```
+
+Reusable building blocks live in `src/components/Blocks.tsx`:
+
+- `Callout` (info, warn, note, ok tones)
+- `Example`, `Steps`
+- `Terms`, `Limits`, `Tags`
+- `Code` with file label and lang chip
+- `Tree` for ASCII file trees
+- `ProsCons`, `CompareTable3`
+
+## Notes on accuracy
+
+Numbers, store fees, and policies are accurate as of early 2026.
+Stores update their rules; check
+`developer.chrome.com/docs/extensions`,
+`extensionworkshop.com`, and
+`developer.apple.com/safari/extensions` when in doubt.
