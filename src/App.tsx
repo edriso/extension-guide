@@ -91,18 +91,13 @@ export default function App() {
         h.section === 'compare'
       ) {
         setSection(h.section)
-        if (h.page) setActiveId(h.page)
+        const nextPages = pagesFor(h.section)
+        setActiveId(nextPages.find((item) => item.id === h.page)?.id ?? nextPages[0].id)
       }
     }
     window.addEventListener('hashchange', onPop)
     return () => window.removeEventListener('hashchange', onPop)
   }, [])
-
-  useEffect(() => {
-    if (!pages.some((p) => p.id === activeId)) {
-      setActiveId(pages[0].id)
-    }
-  }, [pages, activeId])
 
   const active = pages.find((p) => p.id === activeId) ?? pages[0]
   const idx = pages.findIndex((p) => p.id === active.id)

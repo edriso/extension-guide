@@ -119,7 +119,7 @@ function tokenizeJson(src: string): Tok[] {
     if (/[0-9-]/.test(ch) && (i === 0 || /[^A-Za-z_$]/.test(src[i - 1]))) {
       let j = i
       if (src[j] === '-') j++
-      while (j < len && /[0-9.eE+\-]/.test(src[j])) j++
+      while (j < len && /[0-9.eE+-]/.test(src[j])) j++
       push(src.slice(i, j), 'n')
       i = j
       continue
